@@ -1,9 +1,6 @@
-const app = document.getElementById("app") as HTMLDivElement;
+const canvas = document.createElement("canvas");
+const gl = canvas.getContext("webgl2")!;
 
-app.innerHTML = `
-  <div>
-    Hello World!
-  </div>
-`;
+console.log(gl);
 
 export {};
