@@ -2,7 +2,7 @@
 
 in vec2 a_position;
 
-// This is for our canvas' resolution in pixel
+// This is our canvas' resolution in pixel
 uniform vec2 u_resolution;
 
 void main() {
