@@ -37,29 +37,9 @@ const stride = 0;
 const offset = 0;
 gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
 
-// Fill the buffer with values that define a rectangle
-function setRectangle(
-  gl: WebGLRenderingContext,
-  x: number,
-  y: number,
-  width: number,
-  height: number
-) {
-  const x1 = x;
-  const x2 = x + width;
-  const y1 = y;
-  const y2 = y + height;
-
-  // NOTE: gl.bufferData(gl.ARRAY_BUFFER, ...) will affect
-  // whatever buffer is bound to the `ARRAY_BUFFER` bind point
-  // but so far we only have one buffer. If we had more than one
-  // buffer we'd want to bind that buffer to `ARRAY_BUFFER` first.
-
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]),
-    gl.STATIC_DRAW
-  );
+// Fill the buffer currently bound to ARRAY_BUFFER with values
+function setGeometry(gl: WebGLRenderingContext) {
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 40, 150, 125, 175, 100]), gl.STATIC_DRAW);
 }
 
 resizeCanvasToDisplay(gl.canvas as HTMLCanvasElement);
@@ -73,26 +53,24 @@ gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
 gl.bindVertexArray(vao);
 
 // Draw
-for (let i = 0; i < 1000; i++) {
-  setTimeout(() => {
-    const randomInt = (range: number) => Math.floor(Math.random() * range);
+function draw(gl: WebGLRenderingContext) {
+  // const randomInt = (range: number) => Math.floor(Math.random() * range);
 
-    // Set buffer data
-    setRectangle(
-      gl,
-      randomInt(gl.canvas.width),
-      randomInt(gl.canvas.height),
-      randomInt(300),
-      randomInt(300)
-    );
+  // Set buffer data
+  setGeometry(gl);
 
-    // Set a random color (colors are 0-1 values)
-    gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
+  // Set a random color (colors are 0-1 values)
+  gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
-    // Draw the rectangle
-    const primitiveType = gl.TRIANGLES;
-    const offset = 0;
-    const count = 6;
-    gl.drawArrays(primitiveType, offset, count);
-  }, 1000 * i);
+  // Draw the rectangle
+  const primitiveType = gl.TRIANGLES;
+  const offset = 0;
+  const count = 3;
+  gl.drawArrays(primitiveType, offset, count);
 }
+
+gl.canvas.addEventListener("click", () => {
+  draw(gl);
+});
+
+draw(gl);

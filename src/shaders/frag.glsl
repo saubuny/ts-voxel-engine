@@ -6,8 +6,9 @@ precision highp float;
 uniform vec4 u_color;
 
 out vec4 outColor;
+in vec4 v_color;
 
 void main() {
     // outColor = vec4(1, 0, 0.5, 1);
-    outColor = u_color;
+    outColor = v_color;
 }
