@@ -39,7 +39,11 @@ gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride,
 
 // Fill the buffer currently bound to ARRAY_BUFFER with values
 function setGeometry(gl: WebGLRenderingContext) {
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 40, 150, 125, 175, 100]), gl.STATIC_DRAW);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([10, 20, 80, 20, 10, 30, 10, 30, 80, 20, 80, 30].map((x) => x * 20)),
+    gl.STATIC_DRAW
+  );
 }
 
 resizeCanvasToDisplay(gl.canvas as HTMLCanvasElement);
@@ -54,9 +58,7 @@ gl.bindVertexArray(vao);
 
 // Draw
 function draw(gl: WebGLRenderingContext) {
-  // const randomInt = (range: number) => Math.floor(Math.random() * range);
-
-  // Set buffer data
+  // Set buffer data to a triangle
   setGeometry(gl);
 
   // Set a random color (colors are 0-1 values)
@@ -65,12 +67,11 @@ function draw(gl: WebGLRenderingContext) {
   // Draw the rectangle
   const primitiveType = gl.TRIANGLES;
   const offset = 0;
-  const count = 3;
+  const count = 6;
   gl.drawArrays(primitiveType, offset, count);
 }
 
-gl.canvas.addEventListener("click", () => {
-  draw(gl);
-});
-
 draw(gl);
+setInterval(() => {
+  draw(gl);
+}, 1000);
